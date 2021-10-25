@@ -1,10 +1,5 @@
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Scanner;
-import java.util.logging.Level;
 
 public class OrderMain {
 
@@ -26,24 +21,8 @@ public class OrderMain {
 		 *
 		 */
 		
-		//Get the current date and time and convert it into a String
-		Date date = Calendar.getInstance().getTime();  
-		DateFormat dFormat = new SimpleDateFormat("yyyy_MM_dd_hh_mm_ss");  
-		String strDate = dFormat.format(date);
-				
-		//The log is initialized and named after the date and time.
-		OrderLog log = new OrderLog("Log_" + strDate + ".txt");
-						
-		//Log Parameters are set.
-		log.logger.setLevel(Level.ALL);
-		log.logger.setUseParentHandlers(false);
-								
-		try {
-			log.logger.info("Log file has been successfully created.");
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
+		
+		
 		
 		
 		//Variables specifically for the main code.
@@ -58,7 +37,6 @@ public class OrderMain {
 		String color;
 		String text;
 		boolean customImage;
-		int indexForLog = 0;
 		
 		
 		
@@ -72,9 +50,6 @@ public class OrderMain {
 		orders.add(new Order("KS", 58347, "4823 False Ave.", "Black", "LET'S GET CRAZY", false, false));
 		orders.add(new Order("FL", 29028, "2811 Rumor Ct.", "Blue", "", true, false));
 		orders.add(new Order("NV", 93748, "2921 Incorrect Blvd.", "Orange", "ORANGE YOU GLAD I'M HERE?", false, false));
-		log.logger.info("Sample Orders have been created.");
-		
-		try {
 		
 		while(running) {
 			
@@ -84,14 +59,7 @@ public class OrderMain {
 			System.out.println("3 = Add Order");
 			System.out.println("4 = Cancel Order");
 			System.out.println("5 = Exit\n");
-			
-			try {
-				option = scnr.nextInt();
-				log.logger.info("Option is set to value of " + option);
-			} catch(Exception e) { 
-				log.logger.info("Invalid int for Option was caught.");
-			}
-			
+			option = scnr.nextInt();
 			scnr.nextLine();
 			System.out.println("\n\n\n\n\n\n\n\n\n\n");
 			
@@ -107,7 +75,6 @@ public class OrderMain {
 						orders.get(i).printOrder(i+1);
 					}
 					
-					log.logger.info("All orders have been printed (View All Orders)");
 					System.out.println("\n\n\nPress ENTER to Continue");
 					scnr.nextLine();
 					
@@ -122,19 +89,12 @@ public class OrderMain {
 						orders.get(i).printOrder(i+1);
 					}
 					
-					log.logger.info("All orders have been printed (Mark Order as Finished)");
-					
 					System.out.println("\nSELECT AN ORDER TO MARK FINISHED");
 					try {
-						indexForLog = scnr.nextInt();
-						log.logger.info("Attempting to mark Order #" + indexForLog + " as finished...");
-						orders.get(indexForLog-1).markFinished();
-						System.out.println("Order has been marked as finished.");
-						log.logger.info("Order #" + indexForLog + "has been marked as finished...");
-						
-						System.out.println("Press ENTER to Continue");
+					orders.get(scnr.nextInt()-1).markFinished();
+					System.out.println("Order has been marked as finished.");
+					System.out.println("Press ENTER to Continue");
 					} catch (Exception e) {
-						log.logger.info("An invalid index for marking as finished has been caught.");
 						System.out.println("Invalid Entry");
 						System.out.println("Press ENTER to Continue");
 					}
@@ -145,54 +105,40 @@ public class OrderMain {
 					 * The third option allows users to add orders.
 					 * The scanner is used heavily here.
 					 */
-					log.logger.info("Attempting to add a new T-Shirt Order...");
-					try {
 					System.out.println("INPUT STATE\n==========================");
 					state = scnr.nextLine();
-					log.logger.info("State: " + state);
 					System.out.println("Press ENTER to Continue");
 					scnr.nextLine();
 					
 					System.out.println("INPUT ZIP CODE\n==========================");
 					zip = scnr.nextInt();
-					log.logger.info("Zip: " + zip);
 					System.out.println("Press ENTER to Continue");
 					scnr.nextLine();
 					
 					System.out.println("INPUT ADDRESS\n==========================");
 					address = scnr.nextLine();
-					log.logger.info("Address: " + address);
 					System.out.println("Press ENTER to Continue");
 					scnr.nextLine();
 					
 					System.out.println("INPUT COLOR OF T-SHIRT\n==========================");
 					color = scnr.nextLine();
-					log.logger.info("Color: " + color);
 					System.out.println("Press ENTER to Continue");
 					scnr.nextLine();
 					
 					System.out.println("INPUT MESSAGE ON T-SHIRT\n==========================");
 					text = scnr.nextLine();
-					log.logger.info("Text: " + text);
 					System.out.println("Press ENTER to Continue");
 					scnr.nextLine();
 					
 					System.out.println("IS THERE A CUSTOM IMAGE? (true, false)\n==========================");
 					customImage = scnr.nextBoolean();
-					log.logger.info("Custom Image? : " + customImage);
 					System.out.println("Press ENTER to Continue");
 					scnr.nextLine();
 					
 					orders.add(new Order(state, zip, address, color, text, customImage, false));
 					
-					log.logger.info("Order has successfully been added.");
 					System.out.println("Order has been added.");
 					System.out.println("Press ENTER to Continue");
-					
-					} catch(Exception e) {
-						log.logger.info("An error occured while attempting to make a T-Shirt order");
-					}
-					
 					scnr.nextLine();
 					
 					break;
@@ -206,14 +152,10 @@ public class OrderMain {
 					}
 					try {
 						System.out.println("\n\nSELECT AN ORDER TO CANCEL");
-						indexForLog = scnr.nextInt();
-						log.logger.info("Attempting to delete Order #" + indexForLog + "...");
-						orders.remove(indexForLog-1);
-						log.logger.info("Successfully deleted Order #" + indexForLog + ".");
+						orders.remove(scnr.nextInt()-1);
 						System.out.println("Order has been cancelled.");
 						System.out.println("Press ENTER to Continue");
 					} catch (Exception e) {
-						log.logger.info("An invalid index for deleting an entry has been caught.");
 						System.out.println("Invalid Entry");
 						System.out.println("Press ENTER to Continue");
 					}
@@ -226,7 +168,6 @@ public class OrderMain {
 					 * It's nice to be able to end a program without terminating it.
 					 */
 					System.out.println("See you next time!");
-					log.logger.info("Exitting program.");
 					running = false;
 					
 					break;
@@ -234,7 +175,6 @@ public class OrderMain {
 					/*
 					 * If an incorrect value is inputted, users will be notified about it.
 					 */
-					log.logger.info("Invalid menu option has been caught (Case Default).");
 					System.out.println("Invalid Entry");
 					System.out.println("Press ENTER to Continue");
 					scnr.nextLine();
@@ -244,12 +184,6 @@ public class OrderMain {
 			
 			System.out.println("\n\n\n\n\n\n\n\n\n\n");
 			
-		}
-		
-		}
-		
-		catch(Exception e) {
-			log.logger.warning("An fatal error has occured. The program will now be terminated.");
 		}
 		
 		scnr.close();
