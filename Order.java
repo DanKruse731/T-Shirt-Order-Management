@@ -40,6 +40,5 @@ public class Order {
 	public void markFinished() {
 		delivered = true;
 	}
-	
 		
 }
